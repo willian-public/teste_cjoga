@@ -7,8 +7,7 @@ app.controller("SportsController", ['$scope', '$http', '$timeout',
     $scope.loading = true;
     $scope.error = null;
     $scope.sports = [];
-    $scope.categories = [];
-    
+      
    
     $scope.carregarSports = async function() 
     {
@@ -17,16 +16,23 @@ app.controller("SportsController", ['$scope', '$http', '$timeout',
             $scope.loading = true;
             $scope.error = null;            
             
-            const response = await $http.get('https://api.cjoga.com.br/sports');            
+            const response = await $http.get('https://api.cjoga.com.br/sports'); 
+
+            const apiSports = response.data.data || [];
+
+	        $scope.sports = apiSports.map(sport => ({
+	          
+	            nome: sport.name,	            
+	            cor: sport.color
+	        }));     
             
-            console.log(response);            
+            console.log($scope.sports);            
             
         } 
         catch (err)
         {
-            console.error('Erro ao carregar esportes:', err);
+            console.error('Erro ao carregar esportes:', err);            
             
-            // Tratamento diferente para diferentes tipos de erro
             if (err.status === 404) {
                 $scope.error = 'Endpoint da API não encontrado.';
             } else if (err.status === 0) {
