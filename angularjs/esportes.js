@@ -12,11 +12,12 @@ app.controller("SportsController", ['$scope', '$http', '$timeout',
     $scope.carregarSports = async function() 
     {
         try 
-        {
+        {        	
+
             $scope.loading = true;
             $scope.error = null;            
             
-            const response = await $http.get('https://api.cjoga.com.br/sports'); 
+            const response = await $http.get('https://api.ckjoga.com.br/sports'); 
 
             const apiSports = response.data.data || [];
 
@@ -30,26 +31,33 @@ app.controller("SportsController", ['$scope', '$http', '$timeout',
             
         } 
         catch (err)
-        {
-            console.error('Erro ao carregar esportes:', err);            
-            
-            if (err.status === 404) {
-                $scope.error = 'Endpoint da API não encontrado.';
-            } else if (err.status === 0) {
-                $scope.error = 'Não foi possível conectar ao servidor. Verifique sua conexão.';
-            } else if (err.data && err.data.message) {
-                $scope.error = `Erro na API: ${err.data.message}`;
-            } else {
-                $scope.error = 'Ocorreu um erro ao carregar os esportes. Tente novamente mais tarde.';
-            }     
+        {            
+            // Carrega dados mockados em caso de erro
+            $scope.carregarMock();   
             
         } 
         finally
-        {
+        {        	
             $scope.loading = false;
             
         }
     }
+
+    // Função para carregar dados mockados (fallback)
+    $scope.carregarMock = function() {
+        $scope.sports = [
+            {
+                nome: 'Futebol',
+                cor: 'green-700',  
+            },
+            {
+                name: 'Basquete',
+                cor: 'green-900',                
+            }
+        ];
+        
+        console.log($scope.sports);
+    };
 
     $scope.carregarSports();
 
