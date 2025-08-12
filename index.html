@@ -7,19 +7,44 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="./angularjs/esportes.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link rel="stylesheet" type="text/css" href="./css/estilo.css">
 </head>
 <body>
     <div class="container" ng-app="sportsApp" ng-controller="SportsController">
         <header>
-            <h1>Esportes</h1>
-            <p class="subtitle">Encontre o esporte perfeito para você</p>
+            <h1>Listagem de Esportes</h1>
+            <p class="subtitle">Visualização por cores</p>
         </header>
-        <div class="sports-grid">
-           
-           
+        
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" placeholder="Pesquisar esportes..." ng-model="searchText">
         </div>
-    </div>        
-    
+        
+        <div class="sports-grid">
+           <div class="sport-card" ng-repeat="sport in sports" 
+     style="--sport-color: {{sport.cor || '#3498db'}}; --sport-color-secondary: {{sport.cor ? adjustColor(sport.cor, -20) : '#2980b9'}}; --sport-color-light: {{sport.cor ? adjustColor(sport.cor, 40) : '#3498db'}}">
+                <div class="sport-color-bar"></div>
+                <div class="sport-content">
+                    <div class="sport-icon">
+                        <i class="fas fa-{{getSportIcon(sport.nome)}}"></i>
+                    </div>
+                    <h3 class="sport-name">{{sport.nome}}</h3>
+                    <div class="sport-meta">
+                        <div>
+                            <small>COR</small>
+                            <div>{{sport.cor}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>     
+            
+        </div>
+    </div>
    
 </body>
 </html>

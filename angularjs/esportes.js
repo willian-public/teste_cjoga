@@ -17,7 +17,7 @@ app.controller("SportsController", ['$scope', '$http', '$timeout',
             $scope.loading = true;
             $scope.error = null;            
             
-            const response = await $http.get('https://api.ckjoga.com.br/sports'); 
+            const response = await $http.get('https://api.cjoga.com.br/sports'); 
 
             const apiSports = response.data.data || [];
 
@@ -60,6 +60,29 @@ app.controller("SportsController", ['$scope', '$http', '$timeout',
     };
 
     $scope.carregarSports();
+
+    // Função para obter ícones
+	$scope.getSportIcon = function(sportName) {
+	    const icons = {
+	        'Futebol': 'futbol',
+	        'Basquete': 'basketball-ball',
+	        'Tênis': 'table-tennis',
+	        'Natação': 'water',
+	        'Vôlei': 'volleyball-ball',
+	        'Skate': 'skating'
+	    };
+	    return icons[sportName] || 'dumbbell';
+	};
+
+	// Função para ajustar cores
+	$scope.adjustColor = function(color, amount) {
+	    if (!color || !color.startsWith('#')) return '#3498db';
+	    return '#' + color.replace(/^#/, '').replace(/../g, color => 
+	        ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount).toString(16)).substr(-2));
+	};
+
+	// Forçar atualização da view após carregar dados
+	$scope.$applyAsync();
 
 }]);
 
